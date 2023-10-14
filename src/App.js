@@ -1,49 +1,50 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 
-function ColorPicker({ colors }) {
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [showColorList, setShowColorList] = useState(false);
+const ColorPicker = ({ colors }) => {
+  const [selectedColor, setSelectedColor] = React.useState(null);
+  const [displayColorList, setDisplayColorList] = React.useState(false);
 
   const handleButtonClick = () => {
-    setShowColorList(!showColorList);
+    setDisplayColorList(!displayColorList);
   };
 
   const handleColorClick = (color) => {
     setSelectedColor(color);
-    setShowColorList(false);
+    setDisplayColorList(false);
   };
 
+  const colorSquares = colors.map((color, index) => (
+    <div
+      key={index}
+      className="color-square"
+      style={{ backgroundColor: color }}
+      onClick={() => handleColorClick(color)}
+    ></div>
+  ));
+
+  const colorList = displayColorList ? (
+    <div className="color-list">
+      {colorSquares}
+    </div>
+  ) : null;
+
   return (
-    <div className="color-picker">
-      <button onClick={handleButtonClick}>Pick a color</button>
-      {showColorList && (
-        <ul className="color-list">
-          {colors.map((color, index) => (
-            <li
-              key={index}
-              onClick={() => handleColorClick(color)}
-              style={{ backgroundColor: color }}
-            ></li>
-          ))}
-        </ul>
-      )}
-      {selectedColor && (
-        <p>Selected Color: <span style={{ backgroundColor: selectedColor }}>{selectedColor}</span></p>
-      )}
+    <div className="app">
+      <div className="color-picker" style={{ backgroundColor: selectedColor || 'purple' }}>
+        {colorList}
+        <button onClick={handleButtonClick} style={{ backgroundColor: 'green' }}>
+          Pick a color
+        </button>
+      </div>
     </div>
   );
-}
+};
 
 function App() {
-  const colors = ['red', 'green', 'blue', 'yellow', 'orange'];
+  const colors = ['red', 'blue', 'yellow', 'green', 'orange', 'pink', 'purple', 'brown', 'gray', 'cyan', 'magenta', 'violet', 'indigo', 'teal', 'lime', 'olive', 'maroon', 'navy', 'fuchsia', 'aqua'];
 
-  return (
-    <div className="App">
-      <h1>Color Picker App</h1>
-      <ColorPicker colors={colors} />
-    </div>
-  );
+  return <ColorPicker colors={colors} />;
 }
 
 export default App;
